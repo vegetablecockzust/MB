@@ -3,11 +3,20 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="viewport"
+        content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <script>
+        // 初始化单位rem为10px，默认屏幕宽度为320px
+        document.documentElement.style.fontSize = window.innerWidth / 32 + "px"
+    </script>
     <style>
+        body {
+            font-size: 1.3rem
+        }
+
         label {
             margin: 10px;
             font-size: 24px;
@@ -23,16 +32,126 @@
             color: #000;
             word-wrap: break-word;
         }
+
+        #bang {
+            padding: 1rem;
+            width: 30rem;
+            height: 8rem;
+            border: 0.1rem solid dimgray;
+            text-align: center;
+        }
+
+        .left {
+            float: left;
+            width: 50%
+        }
+
+        .right {
+            float: right;
+            width: 50%
+        }
+
+        .block {
+            width: 1.3rem;
+            height: 1.3rem;
+            transform: translateY(0.2rem);
+            margin-right: 4rem;
+            float: right;
+        }
+
+        .sce {
+            width: 32rem;
+            height: 18rem;
+            border: 0.1rem solid dimgray;
+        }
+
+        .sce-head {
+            width: 32rem;
+            height: 3.5rem;
+            border: 0.1rem solid dimgray;
+            text-align: center;
+        }
+        .sce-head div {
+            float: left;
+            margin-top: 1rem;
+        }
+        .modName{
+            width: 6rem;
+        }
+        .deadline{
+            width: 12rem;
+        }
+        .count{
+            width: 10rem;
+        }
+        .expander{
+            width: 4rem;
+        }
+        .sce-body{
+            position: relative;
+        }
+        .sce-body .event{
+            position: absolute;
+
+        }
     </style>
 </head>
 
 <body>
-    <!-- <label>Hello APP</label>
-    <div id='sys-info'></div> -->
+    <div id="bang">
+        <h2>2019.12.2</h2>
+        <br>
+        <div class="left" style="text-align: left;">
+            今天：&nbsp;&nbsp;星期 <b>一</b>
+            <br>
+            农历：&nbsp;&nbsp;<b>六</b>月<b>初十</b>
+        </div>
+        <div class="right" style="text-align: left;">
+            完成：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block" style="background-color: green"></span>
+            <br>
+            待办：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block" style="background-color: red"></span>
+        </div>
+    </div>
+    <div class="sce">
+        <div class="sce-head">
+            <div class="modNname">模块</div> <div class="deadline">距离截止时间:</div> <div class="count"><b>1</b>项待办</div> <div class="expander">收起</div>
+        </div>
+        <div class="sce-body">
+            <div class="event">
+
+            </div>
+        </div>
+    </div>
+    <div class="sce">
+        <div class="sce-head">
+
+        </div>
+        <div class="sce-body">
+
+        </div>
+    </div>
+    <div class="sce">
+        <div class="sce-head">
+
+        </div>
+        <div class="sce-body">
+
+        </div>
+    </div>
+    <div class="sce">
+        <div class="sce-head">
+
+        </div>
+        <div class="sce-body">
+
+        </div>
+    </div>
+    <div id="tail"></div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
-    apiready = function() {
+
+    apiready = function () {
         // 引擎版本信息: var ver = api.version;
         // 系统类型: ' + var sType = api.systemType;
         // 系统版本: ' + var sVer = api.systemVersion;
