@@ -16,7 +16,19 @@ window.MB = function MB() {
       on_off: false
     }
   }
+  this.DATA = {
+
+  }
+  Object.defineProperty(this,"data",{
+    set (val){
+      
+    },
+    get (val){
+      return this.DATA
+    }
+  })
 }
+
 MB.prototype.init = function () {
   this.winHeight = api.winHeight
   this.winWidth = api.winWidth
@@ -325,12 +337,125 @@ MB.prototype.open_perCenter = function (params, fn) {
     // 描述:（可选项）模块是否随所属 window 或 frame 滚动
     // 默认值:true（不随之滚动）
   }, fn)
+    // {
+    //     click:          // 所点击的按钮的索引
+    //                     // 如果存在修改按钮，则其index是按钮数组总下标加一
+    //                     // 若存在左上角按钮，则其index是按钮数组总下标加二
+    //                     // 若存在右上角按钮，则其inidex是按钮数组总下标加三
+    // }
+    
 }
 MB.prototype.open_contactList = function (params, fn) {
   if (this.UImoduleState.contactList.on_off) {
     return;
   }
   this.contactList.open({
+    rect: {
+      x: 0, //（可选项）数字类型；模块左上角的 x 坐标（相对于所属的 Window 或 Frame）；默认:0
+      y: 0, //（可选项）数字类型；模块左上角的 y 坐标（相对于所属的 Window 或 Frame）；默认:0
+      w: api.winWidth, //（可选项）数字类型；模块的宽度，支持设置'auto'；默认:所属的 Window 或 Frame 的宽度
+      h: api.winHeight - 50 //（可选项）数字类型；模块的高度，支持设置'auto'；默认:w * 2.0/3.0
+    },
+    specialGroupTitle: "密友",
+    categarys: [{
+      path: '', // 字符串；item 路径；支持 fs | widget 
+      text: '????' // 字符串；item 文本
+    }, {
+      path: '', // 字符串；item 路径；支持 fs | widget 
+      text: '???' // 字符串；item 文本
+    }, {
+      path: '', // 字符串；item 路径；支持 fs | widget 
+      text: '?????' // 字符串；item 文本
+    }],
+    contacts: [{
+      imgPath: '', //（可选项）字符串类型；列表项的配图路径，支持http://、https://、widget://、fs://等协议，网络图片会被缓存到本地 
+      imgTitle: '张涛', //（可选项）字符串类型；列表项配图位置可传入的文字；若imgTitle和imgPath都传则显示图片
+      imgBackgroundColor: '#fff', //（可选项）字符串类型；列表项配图位置传入文字的背景颜色，支持 rgb、rgba、#；默认:'#fff'         
+      title: '艾雪瑞', //字符串类型；条目的标题，不传则不显示
+      subTitle: '创达集团', //字符串类型；条目的子标题，不传则不显示
+      phonetic: '', //(可选项)字符串类型; title汉字拼音
+      rightBtns: [{ //rightBtns有值时，将会忽略下面的rightBtns参数
+        bgColor: '#388e8e', //（可选项）字符串类型；按钮背景色，支持 rgb、rgba、#；默认:'#388e8e'
+        title: '', //（可选项）字符串类型；按钮标题，水平、垂直居中
+        titleSize: 15 //（可选项）字符串类型；按钮标题的大小，默认:15
+      }],
+      isInSpecialGroup: true, // (可选项)布尔类型；是否进入特殊分组'
+      checkBoxSelected: true, // 布尔类型；是否默认选中（当为单选(即singleSelect=true)时，注意所有数据项仅有一项为checkBoxSelected=true, 只有在选择模式下有效，即showListSelect({selected:true})
+    }],
+    rightBtns: [ //列表项向左滑动露出的按钮组
+      {
+        bgColor: '#388e8e', //（可选项）字符串类型；按钮背景色，支持 rgb、rgba、#；默认:'#388e8e'
+        title: '', //（可选项）字符串类型；按钮标题，水平、垂直居中
+        titleSize: 15 //（可选项）字符串类型；按钮标题的大小，默认:15
+      }
+    ],
+    styles: {
+      alphabetColor: '#000', //(可选项)字符串类型；右侧字母索引的颜色，支持rgb、rgba、#；默认:'#000',
+      alphabetFont: 12, //(可选项)数字类型；右侧字母索引的字母大小；默认:12 **注意:iOS不支持此参数**
+      leftAlphabetColor: '#000', //(可选项)字符串类型；左侧字母索引的颜色，支持rgb、rgba、#；默认:'#000'
+      leftAlphabetFont: 12, //(可选项)数字类型；左侧字母索引的字母大小；默认:12 **注意:该参数不能大于20，否则将显示不完全**
+      sectionIndexBgColor: 'rgba(0,0,0,0)', //(可选项)字符串类型；右侧索引的背景颜色，支持rgb、rgba、#；默认:'rgba(0,0,0,0)'
+      sectionIndexTrackingBgColor: 'rgba(0,0,0,0)', //(可选项)字符串类型；选中时，右侧索引的背景颜色，支持rgb、rgba、#；默认:'rgba(0,0,0,0)'
+      alphabetBg: '"#e1e1e1', //(可选项)字符串类型；横向字母索引的背景颜色，支持rgb、rgba、#；默认:'#e1e1e1'
+      isLastLineHide: false, //(可选项)字符串类型；每一组最后一条线是否隐藏，默认:'false'
+      isHideGroupHeader: false, //(可选项)布尔类型；是否显示分组header；默认:false
+      inputBar: { //(可选项) JSON对象；输入框配置 
+        imagePath: 'widget://image/search.png', // 字符串；图片路径；支持 fs | widget
+        marginTop: 10, // 数字类型；面板上（距离模块顶部）边距；默认:10
+        marginLeft: 20, // 数字类型；面板左边距；默认:20
+        marginRight: 20, // 数字类型；面板右边距；默认:20
+        height: 44, //（可选项）数字类型；头部视图的高度；默认:44
+      },
+      categaryPanel: { // JSON对象；类别面板配置
+        bgColor: '#FFF', // 字符串；面板背景色；默认:#FFF
+        marginLeft: 20, // 数字类型；面板左边距；默认:20
+        marginRight: 20, // 数字类型；面板右边距；默认:20
+        marginTop: 10, // 数字类型；面板上（距离inputBar）边距；默认:10
+        icon: { // JSON对象；icon配置
+          size: 40, // 数字类型；icon大小；默认:40
+        },
+        text: { // JSON对象；文本设置；
+          marginTop: 10, // 数字类型；距离顶部的距离；默认:10
+          color: "#000", // 字符串类型；文本的颜色；默认:#000
+          size: 12, // 数字类型；文本字体大小；默认:12
+        }
+      },
+      checkBoxBtn: { //(可选项)JSON对象；复选框样式，若不传则不显示
+        marginRight: 10, //(可选项)数字类型；复选框的右边距，默认:10
+        size: 30, //(可选项)数字类型；复选框的大小，默认:30
+        normalImg: '', //(可选项)字符串类型；未选中图标路径（本地路径，支持fs://、widget://)
+        selectedImg: '' //(可选项)字符串类型；选中图片的路径（本地路径，支持fs://、widget://)
+      },
+      indexer: { //（可选项）设置索引条的上下边距（该参数仅支持android）
+        marginTop: 100, //（可选项）数字类型；索引上边距；默认:0
+        marginBottom: 100 //（可选项）数字类型；索引下边距；默认:0
+      },
+      item: { //（可选项）JSON对象；列表项的样式
+        dividingLine: { //(可选项)JSON对象；分割线样式
+          leftMargin: 10, //(可选项)数字类型；分割线的宽度，默认:和文字的左边对齐
+          lineHeight: 0.5, //(可选项)数字类型；分割线的高度，默认:0.5
+          lineColor: '#e4e4e4', //(可选项)字符串类型；分割线的颜色，默认:'#e4e4e4'
+        },
+        bgColor: '#AFEEEE', //（可选项）字符串类型；列表项的背景色，支持 rgb、rgba、#；默认:'#AFEEEE'
+        activeBgColor: '#F5F5F5', //（可选项）字符串类型；列表项按下时的背景色，支持 rgb、rgba、#；默认:'#F5F5F5'
+        height: 55, //（可选项）数字类型；列表项的高度；默认:55
+        imgMarginLeft: 10, //（可选项）数字类型；列表项的图片的左边距；默认:10
+        imgMarginRight: 10, //（可选项）数字类型；列表项的图片的右边距；默认:10
+        imgTitleSize: 14, // (可选项) 数字类型；列表项的图片位置传入的文字大小，默认14
+        imgTitleColor: '#f00', //（可选项）字符串类型；列表项的的图片位置传入文字的颜色，支持 rgb、rgba、#；默认:'#f00'
+        imgWidth: 40, //（可选项）数字类型；列表项配图的宽度；默认:列表项的高度减去10px
+        imgHeight: 40, //（可选项）数字类型；列表项配图的高度；默认:列表项的高度减去10px
+        imgCorner: 20, //（可选项）数字类型；列表项配图的圆角大小；默认:20
+        titleMarginTop: 5, //（可选项）数字类型；列表项的标题的上边距；默认:5
+        titleSize: 12, //（可选项）数字类型；列表项标题文字大小；默认:12
+        titleColor: '#000', //（可选项）字符串类型；列表项标题文字颜色，支持 rgb，rgba，#；默认:'#000000'
+        titleWidth: 100, //（可选项）数字类型；列表项标题文字的宽度；默认:100
+        subTitleMarginBottom: 5, //（可选项）数字类型；列表项的子标题的下边距；默认:5
+        subTitleSize: 12, //（可选项）数字类型；列表项子标题文字大小；默认:12
+        subTitleColor: '#000', //（可选项）字符串类型:列表项子标题文字颜色，支持 rgb、rgba、#；默认:'#000000' 
+        subTitleWidth: 100, //（可选项）数字类型；列表项子标题文字的宽度；默认:100
+      }
+    }
 
   }, fn)
   this.UImoduleState.contactList.on_off = true
@@ -493,221 +618,4 @@ MB.prototype.open_tabBar = function (fn) {
   // })
   this.UImoduleState.tabBar.position = _position
   this.UImoduleState.tabBar.on_off = true
-}
-
-function personalCenter_open() {
-  var personalCenter = api.require('personalCenter');
-  personalCenter.open({
-    y: 0, // 类型:数字
-    // 描述:（可选项）个人中心视图上边距屏幕位置
-    // 默认值:0
-
-    h: 220, // 类型:数字
-    // 描述:（可选项）视图的高，不可小于220
-    // 默认值:220
-    imgPath: "",
-    // 类型:字符串
-    // 描述:头像图片的路径（如果为网络路径,图片会被缓存到本地），支持http，https，widget，file，fs协议
-    placeholderImg: "",
-    // 类型:字符串
-    // 描述:（可选项）头像占位图片的路径，支持仅widget，file，fs本地协议
-    userName: "heihei",
-    // 类型:字符串
-    // 描述:（可选项）用户名
-    userNameSize: 13,
-    // 类型:数字类型
-    // 描述:（可选项）用户名字体大小
-    // 默认值:13
-    userColor: "#FFFFFF",
-    // 类型:字符串
-    // 描述:（可选项）用户名和积分字体颜色
-    // 默认值:#FFFFFF
-    subTitle: "小标题",
-    // 类型:字符串
-    // 描述:（可选项）用户名下边的小标题
-    subTitleSize: "12",
-    // 类型:字符串
-    // 描述:（可选项）用户名下边的小标题字体大小
-    // 默认值:13
-    subTitleColor: "#FFFFFF",
-    // 类型:字符串
-    // 描述:（可选项）用户名下边的小标题字体颜色
-    // 默认值:#FFFFFF
-    showLeftBtn: true,
-    // 类型:布尔值
-    // 描述:（可选项）是否显示左上交修改按钮
-    // 默认值:true
-    showRightBtn: true,
-    // 类型:布尔值
-    // 描述:（可选项）是否显示右上角设置按钮
-    // 默认值:true
-    buttonTitle: {
-      left: "修改", //（可选项）字符串类型；左边按钮的标题文字；默认:‘修改’
-      right: "设置" //（可选项）字符串类型；右边按钮的标题文字；默认:'设置'
-    },
-    // 类型:JSON 对象
-    // 描述:（可选项）顶部两边按钮的标题文字，当 showLeftBtn、showRightBtn 为 true 时本参数有效
-    // 默认:参考内部字段
-    modButton: {
-      bgImg: "", //字符串类型；按钮背景图片，要求本地路径（widget://、fs://）
-      lightImg: "" //（可选项）字符串类型；按钮点击效果图路径，要求本地路径（widget://、fs://）
-    },
-    // 类型:JSON 对象
-    // 描述:（可选项）修改按钮参数
-    // 备注:若不传则不显示修改按钮
-    // 内部字段:
-
-    btnArray: [{
-      bgImg: "", //字符串类型；按钮背景图片，要求本地路径（widget://、fs://）
-      selectedImg: "", //（可选项）字符串类型；按钮选中后图片，要求本地路径（widget://、fs://）
-      lightImg: "", //（可选项）字符串类型；按钮点击图片，要求本地路径（widget://、fs://）
-      title: "用户头像", //（可选项）字符串类型；按钮上的标题
-      count: "hei", //（可选项）字符串类型；按钮上的数据
-      titleColor: "#AAAAAA", //（可选项）字符串类型；按钮上的标题颜色，支持 rgb、rgba、#；默认:#AAAAAA
-      titleLightColor: "#A4D3EE", //（可选项）字符串类型；按钮选中标题的颜色，支持 rgb、rgba、#；默认:#A4D3EE
-      countColor: "#FFFFFF", //（可选项）字符串类型；按钮上数字颜色，支持 rgb、rgba、#；默认:#FFFFFF
-      countLightColor: "#A4D3EE", //（可选项）字符串类型；按钮上数字选中颜色，支持 rgb、rgba、#；默认:#A4D3EE
-    }],
-    // 类型:数组
-    // 默认值:默认按钮
-    // 描述:（可选项）下边按钮的参数信息
-    clearBtn: false,
-    // 类型:布尔值
-    // 描述:（可选项）是否将个人中心下边按钮清除
-    // 默认值:false
-    fixedOn: "",
-    // 类型:字符串类型
-    // 描述:（可选项）模块视图添加到指定 frame 的名字（只指 frame，传 window 无效）
-    // 默认:模块依附于当前 window
-    fixed: true,
-    // 类型:布尔
-    // 描述:（可选项）模块是否随所属 window 或 frame 滚动
-    // 默认值:true（不随之滚动）
-  }, function (ret, err) {
-    // {
-    //     click:          // 所点击的按钮的索引
-    //                     // 如果存在修改按钮，则其index是按钮数组总下标加一
-    //                     // 若存在左上角按钮，则其index是按钮数组总下标加二
-    //                     // 若存在右上角按钮，则其inidex是按钮数组总下标加三
-    // }
-  })
-}
-
-function UIListContactsSelect_open() {
-  if (window.UIListContactsSelect) {
-    console.log("UIListContactsSelect has already existed!")
-    return
-  }
-  var UIListContactsSelect = api.require('UIListContactsSelect');
-  UIListContactsSelect.open({
-    rect: {
-      x: 0, //（可选项）数字类型；模块左上角的 x 坐标（相对于所属的 Window 或 Frame）；默认:0
-      y: 0, //（可选项）数字类型；模块左上角的 y 坐标（相对于所属的 Window 或 Frame）；默认:0
-      w: api.winWidth, //（可选项）数字类型；模块的宽度，支持设置'auto'；默认:所属的 Window 或 Frame 的宽度
-      h: api.winHeight - 50 //（可选项）数字类型；模块的高度，支持设置'auto'；默认:w * 2.0/3.0
-    },
-    specialGroupTitle: "密友",
-    categarys: [{
-      path: '', // 字符串；item 路径；支持 fs | widget 
-      text: '????' // 字符串；item 文本
-    }, {
-      path: '', // 字符串；item 路径；支持 fs | widget 
-      text: '???' // 字符串；item 文本
-    }, {
-      path: '', // 字符串；item 路径；支持 fs | widget 
-      text: '?????' // 字符串；item 文本
-    }],
-    contacts: [{
-      imgPath: '', //（可选项）字符串类型；列表项的配图路径，支持http://、https://、widget://、fs://等协议，网络图片会被缓存到本地 
-      imgTitle: '张涛', //（可选项）字符串类型；列表项配图位置可传入的文字；若imgTitle和imgPath都传则显示图片
-      imgBackgroundColor: '#fff', //（可选项）字符串类型；列表项配图位置传入文字的背景颜色，支持 rgb、rgba、#；默认:'#fff'         
-      title: '艾雪瑞', //字符串类型；条目的标题，不传则不显示
-      subTitle: '创达集团', //字符串类型；条目的子标题，不传则不显示
-      phonetic: '', //(可选项)字符串类型; title汉字拼音
-      rightBtns: [{ //rightBtns有值时，将会忽略下面的rightBtns参数
-        bgColor: '#388e8e', //（可选项）字符串类型；按钮背景色，支持 rgb、rgba、#；默认:'#388e8e'
-        title: '', //（可选项）字符串类型；按钮标题，水平、垂直居中
-        titleSize: 15 //（可选项）字符串类型；按钮标题的大小，默认:15
-      }],
-      isInSpecialGroup: true, // (可选项)布尔类型；是否进入特殊分组'
-      checkBoxSelected: true, // 布尔类型；是否默认选中（当为单选(即singleSelect=true)时，注意所有数据项仅有一项为checkBoxSelected=true, 只有在选择模式下有效，即showListSelect({selected:true})
-    }],
-    rightBtns: [ //列表项向左滑动露出的按钮组
-      {
-        bgColor: '#388e8e', //（可选项）字符串类型；按钮背景色，支持 rgb、rgba、#；默认:'#388e8e'
-        title: '', //（可选项）字符串类型；按钮标题，水平、垂直居中
-        titleSize: 15 //（可选项）字符串类型；按钮标题的大小，默认:15
-      }
-    ],
-    styles: {
-      alphabetColor: '#000', //(可选项)字符串类型；右侧字母索引的颜色，支持rgb、rgba、#；默认:'#000',
-      alphabetFont: 12, //(可选项)数字类型；右侧字母索引的字母大小；默认:12 **注意:iOS不支持此参数**
-      leftAlphabetColor: '#000', //(可选项)字符串类型；左侧字母索引的颜色，支持rgb、rgba、#；默认:'#000'
-      leftAlphabetFont: 12, //(可选项)数字类型；左侧字母索引的字母大小；默认:12 **注意:该参数不能大于20，否则将显示不完全**
-      sectionIndexBgColor: 'rgba(0,0,0,0)', //(可选项)字符串类型；右侧索引的背景颜色，支持rgb、rgba、#；默认:'rgba(0,0,0,0)'
-      sectionIndexTrackingBgColor: 'rgba(0,0,0,0)', //(可选项)字符串类型；选中时，右侧索引的背景颜色，支持rgb、rgba、#；默认:'rgba(0,0,0,0)'
-      alphabetBg: '"#e1e1e1', //(可选项)字符串类型；横向字母索引的背景颜色，支持rgb、rgba、#；默认:'#e1e1e1'
-      isLastLineHide: false, //(可选项)字符串类型；每一组最后一条线是否隐藏，默认:'false'
-      isHideGroupHeader: false, //(可选项)布尔类型；是否显示分组header；默认:false
-      inputBar: { //(可选项) JSON对象；输入框配置 
-        imagePath: 'widget://image/search.png', // 字符串；图片路径；支持 fs | widget
-        marginTop: 10, // 数字类型；面板上（距离模块顶部）边距；默认:10
-        marginLeft: 20, // 数字类型；面板左边距；默认:20
-        marginRight: 20, // 数字类型；面板右边距；默认:20
-        height: 44, //（可选项）数字类型；头部视图的高度；默认:44
-      },
-      categaryPanel: { // JSON对象；类别面板配置
-        bgColor: '#FFF', // 字符串；面板背景色；默认:#FFF
-        marginLeft: 20, // 数字类型；面板左边距；默认:20
-        marginRight: 20, // 数字类型；面板右边距；默认:20
-        marginTop: 10, // 数字类型；面板上（距离inputBar）边距；默认:10
-        icon: { // JSON对象；icon配置
-          size: 40, // 数字类型；icon大小；默认:40
-        },
-        text: { // JSON对象；文本设置；
-          marginTop: 10, // 数字类型；距离顶部的距离；默认:10
-          color: "#000", // 字符串类型；文本的颜色；默认:#000
-          size: 12, // 数字类型；文本字体大小；默认:12
-        }
-      },
-      checkBoxBtn: { //(可选项)JSON对象；复选框样式，若不传则不显示
-        marginRight: 10, //(可选项)数字类型；复选框的右边距，默认:10
-        size: 30, //(可选项)数字类型；复选框的大小，默认:30
-        normalImg: '', //(可选项)字符串类型；未选中图标路径（本地路径，支持fs://、widget://)
-        selectedImg: '' //(可选项)字符串类型；选中图片的路径（本地路径，支持fs://、widget://)
-      },
-      indexer: { //（可选项）设置索引条的上下边距（该参数仅支持android）
-        marginTop: 100, //（可选项）数字类型；索引上边距；默认:0
-        marginBottom: 100 //（可选项）数字类型；索引下边距；默认:0
-      },
-      item: { //（可选项）JSON对象；列表项的样式
-        dividingLine: { //(可选项)JSON对象；分割线样式
-          leftMargin: 10, //(可选项)数字类型；分割线的宽度，默认:和文字的左边对齐
-          lineHeight: 0.5, //(可选项)数字类型；分割线的高度，默认:0.5
-          lineColor: '#e4e4e4', //(可选项)字符串类型；分割线的颜色，默认:'#e4e4e4'
-        },
-        bgColor: '#AFEEEE', //（可选项）字符串类型；列表项的背景色，支持 rgb、rgba、#；默认:'#AFEEEE'
-        activeBgColor: '#F5F5F5', //（可选项）字符串类型；列表项按下时的背景色，支持 rgb、rgba、#；默认:'#F5F5F5'
-        height: 55, //（可选项）数字类型；列表项的高度；默认:55
-        imgMarginLeft: 10, //（可选项）数字类型；列表项的图片的左边距；默认:10
-        imgMarginRight: 10, //（可选项）数字类型；列表项的图片的右边距；默认:10
-        imgTitleSize: 14, // (可选项) 数字类型；列表项的图片位置传入的文字大小，默认14
-        imgTitleColor: '#f00', //（可选项）字符串类型；列表项的的图片位置传入文字的颜色，支持 rgb、rgba、#；默认:'#f00'
-        imgWidth: 40, //（可选项）数字类型；列表项配图的宽度；默认:列表项的高度减去10px
-        imgHeight: 40, //（可选项）数字类型；列表项配图的高度；默认:列表项的高度减去10px
-        imgCorner: 20, //（可选项）数字类型；列表项配图的圆角大小；默认:20
-        titleMarginTop: 5, //（可选项）数字类型；列表项的标题的上边距；默认:5
-        titleSize: 12, //（可选项）数字类型；列表项标题文字大小；默认:12
-        titleColor: '#000', //（可选项）字符串类型；列表项标题文字颜色，支持 rgb，rgba，#；默认:'#000000'
-        titleWidth: 100, //（可选项）数字类型；列表项标题文字的宽度；默认:100
-        subTitleMarginBottom: 5, //（可选项）数字类型；列表项的子标题的下边距；默认:5
-        subTitleSize: 12, //（可选项）数字类型；列表项子标题文字大小；默认:12
-        subTitleColor: '#000', //（可选项）字符串类型:列表项子标题文字颜色，支持 rgb、rgba、#；默认:'#000000' 
-        subTitleWidth: 100, //（可选项）数字类型；列表项子标题文字的宽度；默认:100
-      }
-    }
-
-  }, function () {
-
-  })
 }

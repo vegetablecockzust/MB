@@ -71,28 +71,173 @@
             border: 0.1rem solid dimgray;
             text-align: center;
         }
+
         .sce-head div {
             float: left;
             margin-top: 1rem;
         }
-        .modName{
+
+        .modName {
             width: 6rem;
         }
-        .deadline{
+
+        .deadline {
             width: 12rem;
         }
-        .count{
+
+        .count {
             width: 10rem;
         }
-        .expander{
+
+        .expander {
             width: 4rem;
         }
-        .sce-body{
-            position: relative;
-        }
-        .sce-body .event{
-            position: absolute;
 
+        .sce-body {
+            /* overflow: hidden; */
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sce-matte {
+            /* display: none; */
+            position: absolute;
+            width: 32rem;
+            height: 14.5rem;
+            background-color: lightsteelblue;
+            opacity: 0.4
+        }
+
+        .ev-done {
+            float: left;
+            margin-top: 6rem;
+            margin-left: 1rem;
+        }
+
+        .ev-next {
+            float: right;
+            margin-top: 6rem;
+            margin-right: 1rem;
+        }
+
+        .event {
+            position: absolute;
+            width: 22rem;
+            height: 12rem;
+            border: 0.1rem;
+        }
+
+        .EA {
+            top: 2rem;
+            right: 3.5rem;
+            background-color: darkgrey;
+            animation: EA-EE forwards 10s ;
+        }
+
+        .EB {
+            top: 1.5rem;
+            right: 4.85rem;
+            background-color: antiquewhite;
+            /* animation: EB-EA forwards 5s ; */
+        }
+
+        .EC {
+            top: 1.2rem;
+            left: 4.3rem;
+            background-color: azure;
+            /* animation: EC-EB forwards 5s ; */
+        }
+
+        .ED {
+            top: 1rem;
+            left: 3.8rem;
+            background-color: aquamarine;
+            /* animation: ED-EC forwards 5s ; */
+        }
+
+        .EE {
+            top: 0.8rem;
+            left: 3.5rem;
+            background-color: brown;
+            /* animation: EE-ED forwards 5s ; */
+        }
+
+        @keyframes EA-EE {
+            0% {
+                top: 2rem;
+                right: 3.5rem;
+            }
+
+            40% {
+                top: 0.8rem;
+                right: -3rem;
+            }
+
+            60% {
+                top: 0.8rem;
+                right: 3rem;
+                /* opacity: 0.5; */
+            }
+            80%{
+                top: 0.8rem;
+                right: -3rem;
+                /* opacity: 0.8; */
+            }
+
+            99% {
+                top: 0.8rem;
+                left: 3.5rem;
+                /* opacity: 1; */
+            }
+        }
+
+        @keyframes EB-EA {
+            0% {
+                top: 1.5rem;
+                right: 4.85rem;
+            }
+
+            100% {
+                top: 2rem;
+                right: 3.5rem;
+            }
+        }
+
+        @keyframes EC-EB {
+            0% {
+                top: 1rem;
+                left: 3.8rem;
+            }
+
+            100% {
+                top: 1.5rem;
+                right: 4.85rem;
+            }
+        }
+
+        @keyframes ED-EC {
+            0% {
+                top: 1rem;
+                left: 3.8rem;
+            }
+
+            100% {
+                top: 1rem;
+                left: 3.8rem;
+            }
+        }
+
+        @keyframes EE-ED {
+            0% {
+                top: 0.8rem;
+                left: 3.5rem;
+            }
+
+            100% {
+                top: 1rem;
+                left: 3.8rem;
+            }
         }
     </style>
 </head>
@@ -114,11 +259,30 @@
     </div>
     <div class="sce">
         <div class="sce-head">
-            <div class="modNname">模块</div> <div class="deadline">距离截止时间:</div> <div class="count"><b>1</b>项待办</div> <div class="expander">收起</div>
+            <div class="modNname">模块</div>
+            <div class="deadline">距离截止时间:</div>
+            <div class="count">共<b>1</b>项待办</div>
+            <div class="expander">收起</div>
         </div>
         <div class="sce-body">
-            <div class="event">
+            <div class="event EE">
 
+            </div>
+            <div class="event ED">
+
+            </div>
+            <div class="event EC">
+
+            </div>
+            <div class="event EB">
+
+            </div>
+            <div class="event EA">
+                事件便签
+            </div>
+            <div class="sce-matte">
+                <span class="ev-done">完成</span>
+                <span class="ev-next">下一个</span>
             </div>
         </div>
     </div>
@@ -150,8 +314,17 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
-
     apiready = function () {
+        api.addEventListener({
+            name: 'tap'
+        }, function (ret, err) {
+            alert();
+        });
+        api.addEventListener({
+            name: 'swipeleft'
+        }, function (ret, err) {
+            alert('向左轻扫');
+        });
         // 引擎版本信息: var ver = api.version;
         // 系统类型: ' + var sType = api.systemType;
         // 系统版本: ' + var sVer = api.systemVersion;

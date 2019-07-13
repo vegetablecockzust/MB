@@ -58,26 +58,26 @@
     apiready = function () {
         var MB = new window.MB()
         MB.init();
-        MB.open_tabBar(function (ret, err) {
-            switch (ret.index) {
-                case 0:
-                    // MB.open_calendar();
-                    // MB.open_slipList();
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-            }
-        });
+        // MB.open_tabBar(function (ret, err) {
+        //     switch (ret.index) {
+        //         case 0:
+        //             // MB.open_calendar();
+        //             // MB.open_slipList();
+        //             break;
+        //         case 1:
+        //             break;
+        //         case 2:
+        //             break;
+        //         case 3:
+        //             break;
+        //         case 4:
+        //             break;
+        //     }
+        // });
 
         api.openFrame({
             name: 'main',
-            url: 'html/main.html',
+            url: 'html/record.html',
             bounces: true,
             rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
                 marginTop: 30, // main页面距离win顶部的高度

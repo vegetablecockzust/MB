@@ -6,7 +6,175 @@
   <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
   <title>record</title>
 </head>
+<script>
+    // 初始化单位rem为10px，默认屏幕宽度为320px
+    document.documentElement.style.fontSize = window.innerWidth / 32 + "px"
+</script>
+<style>
+  body{
+    padding: 0;
+    margin: 0;
+  }
+  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: darkgrey;
+  }
+  #nav{
+    padding:1rem;
+    height: 3rem;
+    border-bottom: 0.1rem solid lightgrey;
+  }
+  #nav_back{
+    display: inline-block;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    height: 2.6rem;
+    width: 2.6rem;
+    background: url("../icon/rec_back.png") center no-repeat ;
+    background-size: 100%;
+  }
+
+  #nav_alt{
+    display: inline-block;
+    float: right;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    height: 2.6rem;
+    width: 2.6rem;
+    background: url("../icon/rec_alt.png") center no-repeat;
+    background-size: 100%;
+    display: none;
+  }
+  #nav_save{
+    display: inline-block;
+    float: right;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    height: 2.6rem;
+    width: 2.6rem;
+    background: url("../icon/rec_save.png") center no-repeat;
+    background-size: 100%;
+  }
+  #title{
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+    width: cale(100%-3rem);
+    font-size: 1.8rem;
+    color: #606266;
+    border: none;
+    outline-style: none ; 
+  }
+  #date{
+    border-top: 0.1rem solid lightgrey;
+    padding: 1rem 1.5rem;
+  }
+  #date input{
+    text-align: center;
+    font-size: 1.4rem;
+    outline-style: none ; 
+    background: none;
+    color: #606266;
+    width: 10rem;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+  }
+  #describe{
+    height: 40rem;
+    width: 100%;
+    font-size: 1.4rem;
+    outline: none;
+    color: #606266;
+  }
+  /* #14adc4 */
+  #tags{
+    width: 100%;
+    height: 5rem;
+  }
+  .tag{
+    display: inline-block;
+    margin-left: 1rem;
+    width: 4rem;
+    height: 4rem;
+    background: center no-repeat;
+  }
+  #tag{
+    background-image: url("../icon/rec_tag_on.png");
+    background-size: 75%;
+  }
+  #clock{
+    background-image: url("../icon/rec_clock.png");
+    background-size: 75%;
+  }
+  #notice{
+    background-image: url("../icon/rec_notice.png");
+    background-size: 75%;
+  }
+  #note{
+    background-image: url("../icon/rec_note.png");
+    background-size: 75%;
+  }
+  #linkman{
+    background-image: url("../icon/rec_linkman.png");
+    background-size: 75%;
+  }
+  #phone{
+    background-image: url("../icon/rec_phone.png");
+    background-size: 100%;
+  }
+  .input{
+    display: block;
+    position: absolute;
+    right: 1.5rem;
+    width: 4rem;
+    height: 4rem;
+    background: center no-repeat;
+    border-radius: 2rem;
+    border: 0.1rem #1296db solid;
+  }
+  .input:active,.tag:active{
+    opacity: 0.5
+  }
+  #voice{
+    top: 40rem;
+    background-size: 130%;
+    background-image: url("../icon/rec_voice.png")
+  }
+  #photo{
+    top: 45rem;
+    background-size: 70%;
+    background-image: url("../icon/rec_photo.png")
+  }
+</style>
 <body>
-  
+  <div id="nav">
+    <span id="nav_back"></span>
+    <span id="nav_alt"></span>
+    <span id="nav_save"></span>
+  </div>
+  <div class="content">
+    <input type="text" id="title" placeholder="准备做什么？" maxlength="15">
+    <br>
+    <br>
+    <div id="date" >
+      开始：<input type="date" name="" id="date_start">&nbsp;<input type="time" name="" id="time_start"><i style="color: #909399">(必填)</i>
+      <br>
+      <br>
+      结束：<input type="date" name="" id="data_end">&nbsp;<input type="time" name="" id="time_end">
+    </div>
+    <div id="tags">
+      <span onclick="" id="tag" class="tag"></span>
+      <span id="clock" class="tag"></span>
+      <span id="notice" class="tag"></span>
+      <span id="note" class="tag"></span>
+      <span id="linkman" class="tag"></span>
+      <span id="phone" class="tag"></span>
+    </div>
+    <textarea name="" id="describe" rows="10" placeholder="具体描述"></textarea>
+    <span class="input" id="voice"></span>
+    <span class="input" id="photo"></span>
+  </div>
 </body>
+<script>
+  
+</script>
 </html>
