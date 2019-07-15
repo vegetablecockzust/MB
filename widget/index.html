@@ -58,34 +58,68 @@
     apiready = function () {
         var MB = new window.MB()
         MB.init();
-        // MB.open_tabBar(function (ret, err) {
-        //     switch (ret.index) {
-        //         case 0:
-        //             // MB.open_calendar();
-        //             // MB.open_slipList();
-        //             break;
-        //         case 1:
-        //             break;
-        //         case 2:
-        //             break;
-        //         case 3:
-        //             break;
-        //         case 4:
-        //             break;
-        //     }
-        // });
+        MB.open_tabBar(function (ret, err) {
+            switch (ret.index) {
+                case 0:
+                    // MB.open_calendar();
+                    // MB.open_slipList();
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    api.openFrame({
+                        name:"record",
+                        url:"html/record.html",
+                        pageParam:"",//页面JSON参数，api.pageParam 获取
+                        bgColor:"#FFFFFF",//默认透明
+                        rect:{
+                            marginTop:30,
+                            marginBottom:0,
+                            w:"auto"
+                        },
+                        bounces:true,
+                        reload:true,
+                        animation:{
+                            type:"push",
+                                //  none            //无动画效果
+                                // push            //新视图将旧视图推开
+                                // movein          //新视图移到旧视图上面
+                                // fade            //交叉淡化过渡（不支持过渡方向）
+                                // flip            //翻转效果
+                                // reveal          //将旧视图移开,显示下面的新视图
+                                // ripple          //滴水效果（不支持过渡方向）
+                                // curl            //向上翻一页
+                                // un_curl         //向下翻一页
+                                // suck            //收缩效果（不支持过渡方向）
+                                // cube            //立方体翻滚效果
+                            subType:"from_bottom",
+                                //  from_right      //从右边开始动画
+                                // from_left       //从左边开始动画
+                                // from_top        //从顶部开始动画
+                                // from_bottom     //从底部开始动画
+                            duration:300,
+                            customRefreshHeader:""
+                                //可选项）设置使用自定义下拉刷新模块的名称，设置后可以使用 api.setCustomRefreshHeaderInfo 方法来使用自定义下拉刷新组件
+                        }
+                    });
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        });
 
         api.openFrame({
             name: 'main',
-            url: 'html/record.html',
+            url: 'html/main.html',
             bounces: true,
             rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
-                marginTop: 30, // main页面距离win顶部的高度
+                marginTop: 0, // main页面距离win顶部的高度
                 marginBottom: 40, // main页面距离win底部的高度
                 w: 'auto' // main页面的宽度 自适应屏幕宽度
             }
         });
     };
 </script>
-
 </html>

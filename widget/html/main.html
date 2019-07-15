@@ -14,7 +14,10 @@
     </script>
     <style>
         body {
-            font-size: 1.3rem
+            font-size: 1.3rem;
+            color: #303133;
+            padding: 0;
+            margin: 0;
         }
 
         label {
@@ -35,10 +38,14 @@
 
         #bang {
             padding: 1rem;
+            padding-top: 3rem;
             width: 30rem;
             height: 8rem;
-            border: 0.1rem solid dimgray;
+            border-bottom: 0.1rem solid white;
             text-align: center;
+            background: url("../image/main_sky.jpg") no-repeat center;
+            background-size: 100%;
+            color: #606266
         }
 
         .left {
@@ -54,21 +61,32 @@
         .block {
             width: 1.3rem;
             height: 1.3rem;
-            transform: translateY(0.2rem);
+            transform: translateY(0.2rem) scale(1.5, 1.5);
             margin-right: 4rem;
             float: right;
+            background: center no-repeat
+        }
+
+        .icon-finish {
+            background-image: url("../icon/main_finish.png");
+            background-size: cover;
+        }
+
+        .icon-backlog {
+            background-image: url("../icon/main_backlog.png");
+            background-size: cover;
         }
 
         .sce {
+            overflow: hidden;
             width: 32rem;
             height: 18rem;
-            border: 0.1rem solid dimgray;
+            animation: 0.5s  forwards ;
+            /* border: 0.1rem solid dimgray; */
         }
-
         .sce-head {
             width: 32rem;
             height: 3.5rem;
-            border: 0.1rem solid dimgray;
             text-align: center;
         }
 
@@ -76,28 +94,70 @@
             float: left;
             margin-top: 1rem;
         }
+        .line{
+            position: absolute;
+            bottom: 0;
+            border-bottom: lightsteelblue solid 0.2rem;
+        }
+        .modTag {
+            width: 2rem;
+        }
 
         .modName {
             width: 6rem;
+            text-align: left;
+        }
+
+        .modTag:before {
+            content: "";
+            background: url("../icon/main_sce_tag.png") center no-repeat;
+            background-size: 80%;
+            transform: translateY(-0.4rem);
+            width: 2.6rem;
+            height: 2.6rem;
+            display: inline-block;
         }
 
         .deadline {
+            text-align: left;
+            text-indent: 1.8rem;
             width: 12rem;
+            background: url("../icon/main_sce_deadline.png") no-repeat;
+            background-size: 1.8rem 1.8rem
         }
 
         .count {
-            width: 10rem;
+            width: 8rem;
+            text-align: left;
+            text-indent: 2rem;
+            background: url("../icon/main_sce_backlog.png") no-repeat;
+            background-size: 2rem 2rem;
         }
 
         .expander {
             width: 4rem;
         }
 
+        .expander:active {
+            opacity: 0.4;
+        }
+
+        .up {
+            background: url("../icon/main_sce_up.png") no-repeat center;
+            background-size: 2.5rem 2.5rem;
+        }
+
+        .down {
+            background-size: 2.5rem 2.5rem;
+            background: url("../icon/main_sce_down.png") no-repeat center;
+        }
+
         .sce-body {
-            /* overflow: hidden; */
+            overflow: hidden;
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 14.5rem;
+            transform: translateY(-0.5rem);
         }
 
         .sce-matte {
@@ -106,7 +166,8 @@
             width: 32rem;
             height: 14.5rem;
             background-color: lightsteelblue;
-            opacity: 0.4
+            opacity: 0.4;
+            z-index: 0;
         }
 
         .ev-done {
@@ -125,118 +186,164 @@
             position: absolute;
             width: 22rem;
             height: 12rem;
-            border: 0.1rem;
+            box-shadow: 0.5rem 0.5rem 0.5rem #888888;
+            /* border: 0.1rem; */
+        }
+        .event div{
+            float: left;
+        }
+        .e-tag{
+            width: 30%;
+            height: 28%;
+        }
+        .e-title{
+            width: 70%;
+            height: 28%;
+        }
+        .e-act{
+            width: 30%;
+            height: 72%;
+        }
+        .e-dec{
+            width: 30%;
+            height: 72%
         }
 
         .EA {
             top: 2rem;
-            right: 3.5rem;
+            left: 6.3rem;
             background-color: darkgrey;
-            animation: EA-EE forwards 10s ;
+            animation: forwards 2s;
+            z-index: 100;
         }
 
         .EB {
             top: 1.5rem;
-            right: 4.85rem;
+            left: 5.1rem;
             background-color: antiquewhite;
-            /* animation: EB-EA forwards 5s ; */
+            animation: forwards 2s;
+            z-index: 99;
         }
 
         .EC {
             top: 1.2rem;
             left: 4.3rem;
             background-color: azure;
-            /* animation: EC-EB forwards 5s ; */
+            animation: forwards 2s;
+            z-index: 98;
         }
 
         .ED {
             top: 1rem;
             left: 3.8rem;
             background-color: aquamarine;
-            /* animation: ED-EC forwards 5s ; */
+            animation: forwards 2s;
+            z-index: 97;
         }
 
         .EE {
             top: 0.8rem;
             left: 3.5rem;
             background-color: brown;
-            /* animation: EE-ED forwards 5s ; */
+            animation: forwards 2s;
+            z-index: 96;
         }
-
+        @keyframes hidden{
+            1%{
+                height: 18rem;
+            }
+            100%{
+                height: 3.5rem;
+            }
+        }
         @keyframes EA-EE {
-            0% {
-                top: 2rem;
-                right: 3.5rem;
-            }
-
-            40% {
-                top: 0.8rem;
-                right: -3rem;
-            }
-
             60% {
                 top: 0.8rem;
-                right: 3rem;
-                /* opacity: 0.5; */
-            }
-            80%{
-                top: 0.8rem;
-                right: -3rem;
-                /* opacity: 0.8; */
+                left: 40rem;
             }
 
-            99% {
+            97% {
+                top: 0.8rem;
+                left: 40rem;
+                z-index: 96;
+            }
+
+            100% {
                 top: 0.8rem;
                 left: 3.5rem;
-                /* opacity: 1; */
+                z-index: 96;
             }
         }
 
         @keyframes EB-EA {
-            0% {
+            30% {
                 top: 1.5rem;
-                right: 4.85rem;
+                left: 5.1rem;
+            }
+
+            50% {
+                top: 2rem;
+                left: 6.3rem;
             }
 
             100% {
                 top: 2rem;
-                right: 3.5rem;
+                left: 6.3rem;
+                z-index: 100;
             }
         }
 
         @keyframes EC-EB {
-            0% {
+            40% {
                 top: 1rem;
-                left: 3.8rem;
+                left: 4.3rem;
+            }
+
+            60% {
+                top: 1.5rem;
+                left: 5.1rem;
             }
 
             100% {
                 top: 1.5rem;
-                right: 4.85rem;
+                left: 5.1rem;
+                z-index: 99;
             }
         }
 
         @keyframes ED-EC {
-            0% {
+            50% {
                 top: 1rem;
                 left: 3.8rem;
             }
 
+            70% {
+                top: 1.2rem;
+                left: 4.3rem;
+            }
+
             100% {
-                top: 1rem;
-                left: 3.8rem;
+                top: 1.2rem;
+                left: 4.3rem;
+                z-index: 98;
             }
         }
 
         @keyframes EE-ED {
-            0% {
+            60% {
                 top: 0.8rem;
                 left: 3.5rem;
+            }
+
+            80% {
+                top: 1rem;
+                left: 3.8rem;
             }
 
             100% {
                 top: 1rem;
                 left: 3.8rem;
+                z-index: 97;
             }
         }
     </style>
@@ -244,7 +351,7 @@
 
 <body>
     <div id="bang">
-        <h2>2019.12.2</h2>
+        <p id="date" style="color: aliceblue;font-size: 1.8rem;"></p>
         <br>
         <div class="left" style="text-align: left;">
             今天：&nbsp;&nbsp;星期 <b>一</b>
@@ -252,17 +359,19 @@
             农历：&nbsp;&nbsp;<b>六</b>月<b>初十</b>
         </div>
         <div class="right" style="text-align: left;">
-            完成：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block" style="background-color: green"></span>
+            完成：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block icon-finish"></span>
             <br>
-            待办：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block" style="background-color: red"></span>
+            待办：&nbsp;&nbsp;<b>1</b>&nbsp;&nbsp;<span class="block icon-backlog"></span>
         </div>
     </div>
     <div class="sce">
         <div class="sce-head">
-            <div class="modNname">模块</div>
+            <div class="modTag"></div>
+            <div class="modName">&nbsp;娱乐</div>
             <div class="deadline">距离截止时间:</div>
-            <div class="count">共<b>1</b>项待办</div>
-            <div class="expander">收起</div>
+            <div class="count"><b>1</b>项待办</div>
+            <div class="expander up">&nbsp;</div>
+            <div class="line"></div>
         </div>
         <div class="sce-body">
             <div class="event EE">
@@ -278,7 +387,16 @@
 
             </div>
             <div class="event EA">
-                事件便签
+                <div class="e-tag">场景</div>
+                <div class="e-title">标题</div>
+                <div class="e-act">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="e-dec">d</div>
             </div>
             <div class="sce-matte">
                 <span class="ev-done">完成</span>
@@ -287,38 +405,54 @@
         </div>
     </div>
     <div class="sce">
-        <div class="sce-head">
+            <div class="sce-head">
+                <div class="modTag"></div>
+                <div class="modName">&nbsp;娱乐</div>
+                <div class="deadline">距离截止时间:</div>
+                <div class="count"><b>1</b>项待办</div>
+                <div class="expander up">&nbsp;</div>
+            </div>
+            <div class="sce-body">
+                <div class="event EE">
+                    
+                </div>
+                <div class="event ED">
+    
+                </div>
+                <div class="event EC">
+    
+                </div>
+                <div class="event EB">
+    
+                </div>
+                <div class="event EA">
 
+                </div>
+                <div class="sce-matte">
+                    <span class="ev-done">完成</span>
+                    <span class="ev-next">下一个</span>
+                </div>
+            </div>
         </div>
-        <div class="sce-body">
-
-        </div>
-    </div>
-    <div class="sce">
-        <div class="sce-head">
-
-        </div>
-        <div class="sce-body">
-
-        </div>
-    </div>
-    <div class="sce">
-        <div class="sce-head">
-
-        </div>
-        <div class="sce-body">
-
-        </div>
-    </div>
     <div id="tail"></div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
+    document.getElementById("date").innerText = function () {
+        let date = new Date()
+        return date.getFullYear() + "年" + date.getMonth() + "月" + date.getDate() + "日"
+    }();
+
     apiready = function () {
         api.addEventListener({
             name: 'tap'
         }, function (ret, err) {
-            alert();
+            // document.getElementsByClassName("EA")[0].style.animationName = "EA-EE";
+            // document.getElementsByClassName("EB")[0].style.animationName = "EB-EA";
+            // document.getElementsByClassName("EC")[0].style.animationName = "EC-EB";
+            // document.getElementsByClassName("ED")[0].style.animationName = "ED-EC";
+            // document.getElementsByClassName("EE")[0].style.animationName = "EE-ED"
+            document.getElementsByClassName("sce")[0].style.animationName = "hidden"
         });
         api.addEventListener({
             name: 'swipeleft'

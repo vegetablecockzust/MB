@@ -33,17 +33,6 @@
     background-size: 100%;
   }
 
-  #nav_alt{
-    display: inline-block;
-    float: right;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
-    height: 2.6rem;
-    width: 2.6rem;
-    background: url("../icon/rec_alt.png") center no-repeat;
-    background-size: 100%;
-    display: none;
-  }
   #nav_save{
     display: inline-block;
     float: right;
@@ -125,11 +114,12 @@
     display: block;
     position: absolute;
     right: 1.5rem;
-    width: 4rem;
-    height: 4rem;
-    background: center no-repeat;
-    border-radius: 2rem;
+    width: 3.6rem;
+    height: 3.6rem;
+    background: center no-repeat white;
+    border-radius: 1.8rem;
     border: 0.1rem #1296db solid;
+    box-shadow: #909399 0.3rem 0.3rem 0.5rem
   }
   .input:active,.tag:active{
     opacity: 0.5
@@ -148,7 +138,6 @@
 <body>
   <div id="nav">
     <span id="nav_back"></span>
-    <span id="nav_alt"></span>
     <span id="nav_save"></span>
   </div>
   <div class="content">
@@ -159,7 +148,7 @@
       开始：<input type="date" name="" id="date_start">&nbsp;<input type="time" name="" id="time_start"><i style="color: #909399">(必填)</i>
       <br>
       <br>
-      结束：<input type="date" name="" id="data_end">&nbsp;<input type="time" name="" id="time_end">
+      结束：<input type="date" name="" id="date_end">&nbsp;<input type="time" name="" id="time_end">
     </div>
     <div id="tags">
       <span onclick="" id="tag" class="tag"></span>
@@ -175,6 +164,103 @@
   </div>
 </body>
 <script>
-  
+  function $Id(id){
+    return document.getElementById(id)
+  }
+  function $click(id,fn){
+    $Id(id).addEventListener('click',fn)
+  }
+  function $change(id,fn){
+    $Id(id).addEventListener('change',fn)
+  }
+  function $input(id,fn){
+    $Id(id).addEventListener('input',fn)
+  }
+  var rec_data={
+    record:{
+      title:'',
+      date_start:'',
+      date_end:'',
+      time_end:'',
+      time_start:'',
+      tag:'',
+      clock:'',
+      notice:'',
+      note:'',
+      linkman:'',
+      phone:''
+    },
+    save:function(){
+      api.setGlobalData({
+          key: 'rec_data',
+          value: JSON.stringify(this.rec_data)
+      });
+    }
+  }
+
+  $Id('title').focus();
+
+  apiready = function(){
+    api.startPlay({
+    path: 'widget://res/盗将行.mp3'
+}, function(ret, err) {
+    if (ret) {
+        alert('播放完成');
+    } else {
+        alert(JSON.stringify(err));
+    }
+});
+api.readFile({
+    path: 'widget://config.xml'
+}, function(ret, err) {
+    if (ret.status) {
+        var data = ret.data;
+        console.log(data)
+    } else {
+        alert(err.msg);
+    }
+});
+    $click('nav_back',function(){
+      api.closeFrame();
+    });
+    $click('nav_save',function(){
+      rec_data.save();
+      api.closeFrame();
+    });
+    $input('title',function(e){
+      rec_data.record.title = e.target.value
+    });
+    $change('date_start',function(e){
+      rec_data.record.date_start = e.target.value
+    });
+    $change('time_start',function(e){
+      rec_data.record.date_start = e.target.value
+    });
+    $change('date_end',function(e){
+      rec_data.record.date_start = e.target.value
+    });
+    $change('time_end',function(e){
+      rec_data.record.date_start = e.target.value
+    });
+    $click('tag',function(){
+      api.closeFrame();
+    });
+    $click('clock',function(){
+      
+    });
+    $click('notice',function(){
+      
+    });
+    $click('note',function(){
+      
+    });
+    $click('linkman',function(){
+      
+    });
+    $click('phone',function(){
+      
+    });
+
+  }
 </script>
 </html>
