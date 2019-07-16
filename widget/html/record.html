@@ -163,6 +163,7 @@
     <span class="input" id="photo"></span>
   </div>
 </body>
+<script src="../script/module.js"></script>
 <script>
   function $Id(id){
     return document.getElementById(id)
@@ -188,38 +189,23 @@
       notice:'',
       note:'',
       linkman:'',
-      phone:''
+      phone:'',
+      describe:''
     },
     save:function(){
-      api.setGlobalData({
-          key: 'rec_data',
-          value: JSON.stringify(this.rec_data)
-      });
+      
+    },
+    init:function(){
+
     }
   }
 
   $Id('title').focus();
 
   apiready = function(){
-    api.startPlay({
-    path: 'widget://res/盗将行.mp3'
-}, function(ret, err) {
-    if (ret) {
-        alert('播放完成');
-    } else {
-        alert(JSON.stringify(err));
-    }
-});
-api.readFile({
-    path: 'widget://config.xml'
-}, function(ret, err) {
-    if (ret.status) {
-        var data = ret.data;
-        console.log(data)
-    } else {
-        alert(err.msg);
-    }
-});
+
+    var MB = new window.MB();
+
     $click('nav_back',function(){
       api.closeFrame();
     });
@@ -242,22 +228,53 @@ api.readFile({
     $change('time_end',function(e){
       rec_data.record.date_start = e.target.value
     });
-    $click('tag',function(){
-      api.closeFrame();
+    $click('tag',function(e){
+      MB.open_selector();
     });
-    $click('clock',function(){
-      
+    $click('clock',function(e){
+      MB.open_datePickerS();
     });
-    $click('notice',function(){
-      
+    $click('notice',function(e){
+      api.toast({
+        msg: '开启通知栏提醒',
+        duration: 2000,
+        location: 'middle'
+      });
+
     });
-    $click('note',function(){
-      
+    $click('note',function(e){
+      api.prompt({
+        buttons: ['取消', '确定'],
+        title: '短信内容确认',
+        msg: '手机号：'+'12345678910',
+        text: '注意注意：'+rec_data.record.title
+      },function(ret,err){
+        if(ret.buttonIndex == 1){
+          rec_data.record.note = ret.text
+        }
+      });
     });
     $click('linkman',function(){
-      
+      MB.open_datePickerS();
     });
     $click('phone',function(){
+      api.confirm({
+        title:'接受提醒的手机号：',
+        msg:"12345678910",
+        buttons: ['取消', '确定']
+      }, function(ret, err) {
+        if(ret.buttonIndex==1){
+          rec_data.record.phone = '1'
+        }
+      });
+    });
+    $input('describe',function(e){
+      rec_data.record.describe = e.target.value
+    });
+    $click('voice',function(){
+      
+    });
+    $click('photo',function(){
       
     });
 

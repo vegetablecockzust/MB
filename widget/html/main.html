@@ -81,7 +81,7 @@
             overflow: hidden;
             width: 32rem;
             height: 18rem;
-            animation: 0.5s  forwards ;
+            animation: packup 0.5s alternate infinite paused forwards;
             /* border: 0.1rem solid dimgray; */
         }
         .sce-head {
@@ -248,7 +248,7 @@
             animation: forwards 2s;
             z-index: 96;
         }
-        @keyframes hidden{
+        @keyframes packup{
             1%{
                 height: 18rem;
             }
@@ -452,7 +452,7 @@
             // document.getElementsByClassName("EC")[0].style.animationName = "EC-EB";
             // document.getElementsByClassName("ED")[0].style.animationName = "ED-EC";
             // document.getElementsByClassName("EE")[0].style.animationName = "EE-ED"
-            document.getElementsByClassName("sce")[0].style.animationName = "hidden"
+            document.getElementsByClassName("sce")[0].style.animationPlayState = "running"
         });
         api.addEventListener({
             name: 'swipeleft'

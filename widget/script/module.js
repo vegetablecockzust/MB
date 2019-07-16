@@ -14,10 +14,20 @@ window.MB = function MB() {
     },
     tabBar: {
       on_off: false
+    },
+    selector: {
+      on_off: false
+    },
+    datePickerS: {
+      on_off: false
     }
   }
-  this.DATA = {
+  this.fileTree = {
 
+  }
+  this.altTree={
+    dir:{},
+    file:{}
   }
   Object.defineProperty(this,"data",{
     set (val){
@@ -30,19 +40,64 @@ window.MB = function MB() {
 }
 
 MB.prototype.init = function () {
+  api.setGlobalData({
+    key: 'userName',
+    value: {
+      a:1,
+      b:[1,23]
+    }
+})
+api.setGlobalData({
+  key: 'userName',
+  value: {
+    a:4,
+    b:[1,23]
+  }
+})
+
+  this.fs = api.require('fs');
+
   this.winHeight = api.winHeight
   this.winWidth = api.winWidth
-  this.slipList = api.require("slipList")
-  this.calendar = api.require("UICalendar")
-  this.perCenter = api.require("personalCenter")
-  this.contactList = api.require("UIListContactsSelect")
-  this.tabBar = api.require("NVTabBar")
   return this
+};
+MB.prototype.writeAll_local = function(site){
+
+};
+MB.prototype.readAll_local =function (site,branch){
+  var ret =this.fs.readDirSync({
+    path: 'fs://'+site
+  })
+  if (ret.status) {
+    console.log(JSON.stringify(this.fileTree));
+    for(var i=0;i<ret.data.length;i++ ){
+      console.log(JSON.stringify(ret.data[i]));
+      if(ret.data[i].indexOf('.')==-1){
+        branch[ret.data[i]] = {};
+        this.readAll_local(site+ret.data[i]+'/',branch[ret.data[i]])
+      }else{
+        branch[ret.data[i]] = ret.data[i]
+      }
+    }
+    return ;
+  } else {
+    console.log(JSON.stringify(err));
+  }
+}
+MB.prototype.hide = function (modName,params) {
+  this[modName].hide(params);
+}
+MB.prototype.show = function (modName,params) {
+  this[modName].show(params);
+}
+MB.prototype.close = function (modName,params) {
+  this[modName].close(params);
 }
 MB.prototype.open_slipList = function (params, fn) {
   if (this.UImoduleState.slipList.on_off) {
     return;
   }
+  this.slipList = api.require("slipList")
   var params = params || {}
   this.UImoduleState.slipList.params = params
   this.UImoduleState.slipList.fn = fn
@@ -163,6 +218,7 @@ MB.prototype.open_calendar = function (params, fn) {
   if (this.UImoduleState.calendar.on_off) {
     return;
   }
+  this.calendar = api.require("UICalendar")
   var params = params || {}
   if (!params.hasOwnProperty("styles")) {
     params.styles = {
@@ -250,6 +306,7 @@ MB.prototype.open_perCenter = function (params, fn) {
   if (this.UImoduleState.perCenter.on_off) {
     return;
   }
+  this.perCenter = api.require("personalCenter")
   this.perCenter.open({
     y: params.y || _position.y, // 类型:数字
     // 描述:（可选项）个人中心视图上边距屏幕位置
@@ -337,6 +394,7 @@ MB.prototype.open_perCenter = function (params, fn) {
     // 描述:（可选项）模块是否随所属 window 或 frame 滚动
     // 默认值:true（不随之滚动）
   }, fn)
+  this.UImoduleState.perCenter.on_off=true
     // {
     //     click:          // 所点击的按钮的索引
     //                     // 如果存在修改按钮，则其index是按钮数组总下标加一
@@ -349,6 +407,7 @@ MB.prototype.open_contactList = function (params, fn) {
   if (this.UImoduleState.contactList.on_off) {
     return;
   }
+  this.contactList = api.require("UIListContactsSelect")
   this.contactList.open({
     rect: {
       x: 0, //（可选项）数字类型；模块左上角的 x 坐标（相对于所属的 Window 或 Frame）；默认:0
@@ -464,6 +523,7 @@ MB.prototype.open_tabBar = function (fn) {
   if (this.UImoduleState.tabBar.on_off) {
     return;
   }
+  this.tabBar = api.require("NVTabBar")
   var _position = {
     h: 50
   }
@@ -610,12 +670,168 @@ MB.prototype.open_tabBar = function (fn) {
     enableDoubleClick: false //使能双击事件，默认:false
   }, fn)
   // {
-  //   eventType: 'show',      //字符串类型；交互事件类型，取值范围如下：
-  //                           //show：打开模块并显示事件
-  //                           //click：用户点击模块内子按钮事件
-  //                           //doubleClick：用户双击模块内子按钮事件，只有enableDoubleClick为true且触发双击时回调
+  //   eventType: 'show',      //字符串类型；交互事件类型，取值范围如下:
+  //                           //show:打开模块并显示事件
+  //                           //click:用户点击模块内子按钮事件
+  //                           //doubleClick:用户双击模块内子按钮事件，只有enableDoubleClick为true且触发双击时回调
   //   index:0                 //数字类型；用户点击按钮的索引，仅当 eventType 为 click和doubleClick 时有值
   // })
   this.UImoduleState.tabBar.position = _position
   this.UImoduleState.tabBar.on_off = true
+}
+MB.prototype.open_selector = function (params,fn){
+  if(this.UImoduleState.selector.on_off){
+    return ;
+  }
+  this.selector = api.require("UIMultiSelector")
+  this.selector.open({
+    rect:
+      {
+          h: 244                             //（可选项）数字类型；模块的高度；默认:244
+      },
+    text:{
+          title: '标题',                     //（可选项）字符串类型；模块左上按钮和右上按钮中间显示的标题文字，若不传则不显示
+          leftBtn: '取消',                   //（可选项）字符串类型；模块左上按钮的显示文字；默认:取消
+          rightBtn: '完成',                  //（可选项）字符串类型；模块右上按钮的显示文字；默认:完成
+          selectAll: '全选'                  //（可选项）字符串类型；模块的全选项文字，若max值大于0，则本参数被忽略；默认:全选
+      },
+    max: 0,                                  //描述:（可选项）最多允许同时选中的项数；当值为 0 时可选中所有项，若本字段值大于0则全选项不显示；当值为其它时，选择超过 max 的选项，选项选择无效且回调 ret-> eventType 返回 “overflow”
+    singleSelection: false,                  //描述:（可选项）是否为单选框；参数值为 true 时，忽略参数 max，模块呈 “单选项” 模式状态，即选择第二项将自动取消前一项的已选中状态
+    styles:
+      {
+        bg: '#fff',                        //（可选项）字符串类型；主体的背景，支持 rgb，rgba，#；默认:#fff
+        mask: 'rgba(0,0,0,0.3)',           //（可选项）字符串类型；遮罩层的背景，支持 rgb、rgba、#、img；默认:rgba(0,0,0,0)
+        title: {                           //（可选项）JSON 类型；标题栏样式；默认:见内部字段
+            bg: '#ddd',                    //（可选项）字符串类型；标题栏的背景，支持 rgb、rgba、#、img；默认:#ddd
+            color:'#444',                  //（可选项）字符串类型；标题字体颜色，支持 rgb、gba、#；默认:#444
+            size: 16,                      //（可选项）数字类型；标题字体大小；默认:16
+            h: 44                          //（可选项）数字类型；标题栏的高度；默认:44
+        },
+        leftButton: {                      //（可选项）JSON 类型；左上角按钮样式；默认:见内部字段
+            bg: '#f00',                    //（可选项）字符串类型；按钮的背景，支持 rgb、rgba、#、img；默认:#f00
+            w: 80,                         //（可选项）数字类型；按钮的宽度；默认:80
+            h: 35,                         //（可选项）数字类型；按钮的高度；默认:35
+            marginT: 5,                    //（可选项）数字类型；按钮的上边距；默认:5
+            marginL: 8,                    //（可选项）数字类型；按钮的左边距；默认:8
+            color: '#fff',                 //（可选项）字符串类型；按钮的文字颜色，支持 rgb、rgba、#；默认:#fff
+            size: 14                       //（可选项）数字类型；按钮的文字大小；默认:14
+        },
+        rightButton: {                     //（可选项）JSON 类型；右上角按钮样式；默认:见内部字段
+            bg: '#0f0',                    //（可选项）字符串类型；按钮的背景，支持 rgb、rgba、#、img；默认:#0f0
+            w: 80,                         //（可选项）数字类型；按钮的宽度；默认:80
+            h: 35,                         //（可选项）数字类型；按钮的高度；默认:35
+            marginT: 5,                    //（可选项）数字类型；按钮的上边距；默认:5
+            marginR: 8,                    //（可选项）数字类型；按钮的右边距；默认:8
+            color: '#fff',                 //（可选项）字符串类型；按钮的文字颜色，支持 rgb、rgba、#；默认:#fff
+            size: 14                       //（可选项）数字类型；按钮的文字大小；默认:14
+        },
+        item: {                            //（可选项）JSON 类型；每个选项的样式；默认:见内部字段
+            distance:0,                       //（可选项）数字类型；标题栏和选项之间的距离；默认:0(仅Android支持)
+            h: 44,                         //（可选项）数字类型；按钮的高度；默认:35
+            bg: '#fff',                    //（可选项）字符串类型；选项的背景，支持 rgb、rgba、#、img；默认:#fff
+            bgActive: '#fff',              //（可选项）字符串类型；已选中选项的背景，支持 rgb、rgba、#、img；默认:bg
+            bgHighlight: '#fff',           //（可选项）字符串类型；选项的高亮背景，支持 rgb、rgba、#、img；默认:bg
+            color: '#444',                 //（可选项）字符串类型；选项的文字颜色，支持 rgb，rgba，#；默认:#444
+            active: '#444',                //（可选项）字符串类型；已选中选项的文字颜色，支持 rgb、rgba、#；默认:#444
+            disable:'#444',                   //（可选项）字符串类型；不可选中选项的文字颜色，支持 rgb、rgba、#；默认:#444(仅Android支持)
+            highlight: '#444',             //（可选项）字符串类型；选项的高亮文字颜色，支持 rgb、rgba、#；默认:color
+            size: 14,                      //（可选项）数字类型；选项的文字大小；默认:14
+            activeSize: 14,                //（可选项）数字类型；已选中选项的文字大小；默认:14(仅Android支持)
+            disableSize:14,                   //（可选项）数字类型；不可选中选项的文字大小；默认:14(仅Android支持)
+            lineColor: '#ccc',             //（可选项）字符串类型；分隔线的颜色，支持 rgb、rgba、#；默认:rgba(0,0,0,0)
+            textAlign: 'left'              //（可选项）字符串类型；选项文字的对齐方式，'left|center|right'，当值为 left 或 right 时文字会根据情况空留 icon 已占的位置；默认:left
+        },
+        icon: {                            //（可选项）JSON 类型；每个选项的状态图标样式，若不传则不显示选中的状态图标
+            w: 20,                         //（可选项）数字类型；图标的高度；默认:20
+            h: 20,                         //（可选项）数字类型；图标的高度；默认:w
+            marginT: 11,                   //（可选项）数字类型；图标的上边距；默认:(item.h - h) / 2
+            marginH: 8,                    //（可选项）数字类型；图标的横向边距，与 align 的对齐方向相关；默认:8
+            bg: '#fff',                    //（可选项）字符串类型；图标未选中时的背景，支持 rgb、rgba、#、img；默认:rgba(0,0,0,0)
+            bgActive: '#fff',              //（可选项）字符串类型；已选中图标的背景，支持 rgb、rgba、#、img；默认:bg
+            bgHighlight: '#fff',           //（可选项）字符串类型；选项的高亮背景，支持 rgb、rgba、#、img；默认:bg
+            align: 'left'                  //（可选项）字符串类型；图标相对与选项的对齐方式:'left|right'；默认:left
+        }
+      },
+    animation: true,                       //打开关闭时是否显示滑入滑出动画
+    maskClose: true,                       //（可选项）用户点击遮罩层（选择器以外的区域）时，是否关闭选择器
+    items:
+      [{
+          text: '选项0',               //字符串类型；选项的文字内容
+          status: 'normal',            //字符串类型；选项状态，取值范围如下；默认:normal
+                                      //normal:未选中
+                                      //selected:已选中
+                                      //disable:不可选中
+                                      //forever:不可取消
+      }]
+    // ret:
+    // {
+        // eventType:                         //字符串类型；事件交互类型，取值范围如下:
+        //                                    // show:显示完成
+        //                                    // clickRight: 点击右上按钮  
+        //                                    // clickLeft:点击左上按钮
+        //                                    // overflow:用户选择项大于 open 时设置的 max 值
+        //                                    // clickItem:用户点击了列表选项事件
+        //                                    // clickMask:用户点击了选择器区域以外的遮罩层事件
+        // items:                             //数组类型；返回当前用户所选择的数据项数据，内容格式同传入的 items （支持自定义字段），当 eventType 为 overflow 时本参数无效
+    // }
+  },fn)
+  this.UImoduleState.selector.h = 244
+  this.UImoduleState.selector.on_off = true
+}
+MB.prototype.open_datePickerS = function (params, fn){
+  if(this.UImoduleState.datePickerS.on_off){
+    return ;
+  }
+  this.datePickerS = api.require('UIDatePickerS');
+  this.datePickerS.open({
+    rowHeight: 40,  //选择器的行高
+    styles:
+      {
+        bg: 'rgba(0,0,0,0)',     //（可选项）字符串类型；模块背景，支持 rgb、rgba、#；
+        headerViewBackgroundColor: 'rgba(0,0,0,0)',     //（可选项）字符串类型；设置头部的背景颜色，支持 rgb、rgba、#；
+        lineBackgroundColor: 'rgba(0,0,0,0)',     //（可选项）字符串类型；设置线条的颜色，支持 rgb、rgba、#；
+        item:{                   //（可选项）JSON对象；item 样式；默认值见内部字段
+          normal: '#f00',     //（可选项）字符串类型；常态字体色，支持 rgb、rgba、#；
+          normalFont: 14 ,           //（可选项）数字类型；常态字体大小，；默认值:14
+          selected: '#000079',   //（可选项）字符串类型；选中后的字体色，支持 rgb、rgba、#；
+          selectedFont: 17 ,           //（可选项）数字类型；选中后字体大小，；默认值:17
+          cancelBtn:{
+            cancelButtonTextColor: '#1E1E1E',   //（可选项）字符串类型；设置取消按钮的字体颜色，支持 rgb、rgba、#；默认值:#1E1E1E
+            cancelButtonText: 'cancel' ,         //（可选项）字符串类型；设置取消按钮的字，；默认值:'cancel'
+            cancelButtonFont:17 ,                 //（可选项）数字类型；设置取消按钮的字体大小，；默认值:17
+            cancelButtonImage:''                 //（可选项）字符串类型；设置取消按钮的图片，与cancelButtonText互斥，只能存在一个
+          },
+          confirmBtn:{
+            confirmButtonTextColor: '#1E1E1E',   //（可选项）字符串类型；设置确定按钮的字体颜色，支持 rgb、rgba、#；默认值:#1E1E1E
+            confirmButtonText: 'confirm' ,         //（可选项）字符串类型；设置确定按钮的字，；默认值:'confirm'
+            confirmButtonFont:17 ,                 //（可选项）数字类型；设置确定按钮的字体大小，；默认值:17
+            confirmButtonImage:''                 //（可选项）字符串类型；设置确定按钮的图片，与confirmButtonText互斥，只能存在一个
+          }
+        },
+        bottomButton: {         //（可选项）JSON对象类型；底部按钮设置；
+          // bg:'',            //(可选项)字符串类型；底部按钮背景颜色，支持rgb,rgba,#；
+          // height:,        //(可选项)数字类型；底部按钮高度；默认:根据textSize自适应
+          // text:'',          //(可选项)字符串类型；底部按钮文字；默认:‘确定’
+          // textSize:,      //(可选项)数字类型；底部按钮文字大小；默认:14
+          // textColor:'',  //(可选项)字符串类型；底部按钮文字颜色；默认:‘#1E1E1E’
+          // marginL:,     //(可选项)数字类型；底部按钮左边距；默认:0
+          // marginB:,     //(可选项)数字类型；底部按钮下边距；默认:0
+          // marginR:,    //(可选项)数字类型；底部按钮右边距；默认:0
+          // marginT:,   //(可选项)数字类型；底部按钮上边距；默认:0
+        }
+      },
+    // fixedOn: ,     //模块视图添加到指定 frame 的名字（只指 frame，传 window 无效）
+    fixed: true,       //模块是否随所属 window 或 frame 滚动
+    // ret:
+    // {
+
+    //     eventType:‘submit’/'cancle'        //字符串类型  确定返回‘submit’  取消返回'cancle'（点击取消或点击空白区域均按取消 返回）
+    //     year:2000,                  //年
+    //     month:1,                    //月
+    //     day:1,                      //日
+    //     hour:12,                    //时
+    //     minute:00                   //分
+    // }
+  },fn);
+  this.UImoduleState.datePickerS.on_off = true
 }

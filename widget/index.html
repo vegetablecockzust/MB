@@ -57,7 +57,19 @@
 
     apiready = function () {
         var MB = new window.MB()
+
         MB.init();
+            MB.fs.createDir({
+                path: '999'
+            },function(ret,err){
+                if (ret.status) {
+                    api.alert({msg:'创建目录成功'});
+                }else {
+                    api.alert({msg:err.msg});
+                }
+            });
+            MB.readAll_local('',MB.fileTree)
+            console.log(JSON.stringify(MB.fileTree))
         MB.open_tabBar(function (ret, err) {
             switch (ret.index) {
                 case 0:
